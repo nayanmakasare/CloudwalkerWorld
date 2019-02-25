@@ -1,0 +1,58 @@
+<resources>
+    <string name="app_name">CloudwalkerWorld</string>
+    <string name="browse_title"><![CDATA[Videos by Your Company]]></string>
+    <string name="related_movies">Related Videos</string>
+    <string name="grid_view">Grid View</string>
+    <string name="error_fragment">Error Fragment</string>
+    <string name="personal_settings">Personal Settings</string>
+    <string name="play">Play</string>
+    <string name="watch_trailer_2">FREE</string>
+    <string name="rent_1">Rent By Day</string>
+    <string name="rent_2">From $1.99</string>
+    <string name="buy_1">Buy and Own</string>
+    <string name="buy_2">AT $9.99</string>
+    <string name="movie">Movie</string>
+
+    <!-- Error messages -->
+    <string name="error_fragment_message">An error occurred</string>
+    <string name="dismiss_error">Dismiss</string>
+
+
+    <string-array name="blockedApps">
+        <item>com.google.android.youtube</item>
+        <item>com.cvte.tv.androidsetting</item>
+        <item>com.google.android.voicesearch</item>
+        <item>com.android.vending</item>
+        <item>com.cvte.tv.appstore</item>
+        <item>tv.cloudwalker.cwnxt.launcher</item>
+        <item>tv.cloudwalker.cwnxt.launcher.dev</item>
+        <item>tv.cloudwalker.cwnxt.launcher.cvte</item>
+        <item>tv.cloudwalker.player</item>
+        <item>com.cvte.tv.androidsetting</item>
+        <item>com.cvte.tv.appstore</item>
+        <item>com.android.development</item>
+        <item>com.ipanel.simulator</item>
+        <item>com.android.speechrecorder</item>
+        <item>com.google.android.gms</item>
+        <item>com.cvte.tv.media</item>
+        <item>com.ecloud.eairplay</item>
+        <item>com.hisilicon.dlna.dmp</item>
+        <item>com.cvte.settings</item>
+        <item>com.cvte.tv.setting</item>
+        <item>com.android.tv.quicksettings</item>
+        <item>com.google.android.voicesearch</item>
+        <item>com.android.documentsui</item>
+    </string-array>
+
+    <string-array name="defaultApps">
+        <item>tv.cloudwalker.cloudwalkeruniverse</item>
+        <item>com.ecloud.eshare.server</item>
+        <item>cm.aptoidetv.pt.cvt_platform7</item>
+        <item>com.android.browser</item>
+        <item>com.cvte.tv.media</item>
+    </string-array>
+
+
+    <string name="movie_tile_clicked">moveTileClicked</string>
+
+</resources>

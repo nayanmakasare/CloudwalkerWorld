@@ -1,0 +1,16 @@
+<resources>
+    <color name="background_gradient_start">#000000</color>
+    <color name="background_gradient_end">#DDDDDD</color>
+    <color name="fastlane_background">#0affffff</color>
+    <color name="search_opaque">#0096FF</color>
+    <color name="selected_background">#ffaa3f</color>
+    <color name="default_background">#3d3d3d</color>
+    <color name="logo_background">#c9000000</color>
+    <color name="default_bg">#101010</color>
+    <color name="pure_white">#ffffff</color>
+    <color name="on_focus_tile">#0096FF</color>
+    <color name="tageback_color">#c94e4e4e</color>
+    <color name="rating_star_color">#e4bb26</color>
+    <color name="logo_action_background">#e0000000</color>
+    <color name="app_tile_background_color">#333C53</color>
+</resources>

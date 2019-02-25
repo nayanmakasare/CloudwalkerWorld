@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="full_width_height">430dp</dimen>
+    <dimen name="logo_margin_start">50dp</dimen>
+
+    <dimen name="genre_corner">12dp</dimen>
+    <dimen name="half_padding">8dp</dimen>
+    <dimen name="full_padding">16dp</dimen>
+
+
+
+    <dimen name="lb_browse_padding_top">5dp</dimen>
+
+    <!--Override leanback library dimens to reduce top margin-->
+    <dimen name="lb_browse_rows_margin_top">110dp</dimen>
+    <!--Override leanback library dimens to reduce Title Size-->
+    <dimen name="lb_browse_title_text_size">24sp</dimen>
+
+    <dimen name="lb_browse_title_icon_max_width">200dp</dimen>
+
+
+    <!--Override the DetailFragment Logo height and width-->
+    <dimen name="lb_details_v2_logo_max_width">240dp</dimen>
+    <dimen name="lb_details_v2_logo_max_height">300dp</dimen>
+
+
+    <!--Override the elevation in DetailView Fragment causing is to create a shadow-->
+    <dimen name="lb_details_overview_z">0dp</dimen>
+
+
+    <!--To remove the padding in the Header Fragment-->
+    <!--<dimen name="lb_browse_padding_start">10dp</dimen>-->
+
+    <!--detail description layout frame margin with respect to parent deatilFragment Layout
+adjusting the end margin of our MovieDetailesDesscriptionPresenter and the leanback DetailFragment Frame-->
+    <dimen name="lb_details_v2_description_margin_end">8dp</dimen>
+
+
+
+</resources>
