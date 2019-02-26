@@ -16,7 +16,9 @@ package tv.cloudwalker.cloudwalkerworld.CustomPresenter;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v17.leanback.widget.BaseCardView;
 import android.support.v17.leanback.widget.ImageCardView;
@@ -30,14 +32,19 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.DrawableCrossFadeTransition;
+import com.bumptech.glide.request.transition.Transition;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import tv.cloudwalker.cloudwalkerworld.R;
 import tv.cloudwalker.cloudwalkerworld.module.MovieTile;
 
+import static android.graphics.Bitmap.Config.RGB_565;
+import static com.bumptech.glide.load.DecodeFormat.PREFER_RGB_565;
 import static tv.cloudwalker.cloudwalkerworld.Utils.Utils.isPackageInstalled;
 
 /*
@@ -98,39 +105,61 @@ public class CardPresenter extends Presenter {
     }
 
     @Override
-    public void onBindViewHolder(Presenter.ViewHolder viewHolder, Object item) {
+    public void onBindViewHolder(final Presenter.ViewHolder viewHolder, Object item) {
         MovieTile movie = (MovieTile) item;
-        ImageCardView cardView = (ImageCardView) viewHolder.view;
+        final ImageCardView cardView = (ImageCardView) viewHolder.view;
         if (movie.getPoster() != null) {
             cardView.setTitleText(movie.getTitle());
             cardView.setContentText(movie.getTileContentText());
             cardView.setBadgeImage(movie.getTileBadgeIcon());
             if(movie.getRowLayout() == null || movie.getRowLayout().equalsIgnoreCase("landscape"))
             {
-                cardView.setMainImageDimensions(
-                        convertDpToPixel(viewHolder.view.getContext(), viewHolder.view.getContext().getResources().getInteger(R.integer.tileLandScapeWidth)),
-                        convertDpToPixel(viewHolder.view.getContext(), viewHolder.view.getContext().getResources().getInteger(R.integer.tileLandScapeHeight)));
+                int width = convertDpToPixel(viewHolder.view.getContext(), viewHolder.view.getContext().getResources().getInteger(R.integer.tileLandScapeWidth));
+                int height =  convertDpToPixel(viewHolder.view.getContext(), viewHolder.view.getContext().getResources().getInteger(R.integer.tileLandScapeHeight));
+                cardView.setMainImageDimensions(width, height);
                 Glide.with(viewHolder.view.getContext())
+                        .asBitmap()
                         .load(movie.getPoster())
-                        .into(cardView.getMainImageView());
+                        .into(new SimpleTarget<Bitmap>(){
+                            @Override
+                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                Glide.get(viewHolder.view.getContext()).getBitmapPool().put(resource);
+                                cardView.getMainImageView().setImageBitmap(resource);
+                            }
+                        });
 
             }else if(movie.getRowLayout().equalsIgnoreCase("portrait"))
             {
-                cardView.setMainImageDimensions(
-                        convertDpToPixel(viewHolder.view.getContext(), viewHolder.view.getContext().getResources().getInteger(R.integer.tilePotraitWidth)),
-                        convertDpToPixel(viewHolder.view.getContext(), viewHolder.view.getContext().getResources().getInteger(R.integer.tilePotraitHeight)));
+                final int width = convertDpToPixel(viewHolder.view.getContext(), viewHolder.view.getContext().getResources().getInteger(R.integer.tilePotraitWidth));
+                final int height =  convertDpToPixel(viewHolder.view.getContext(), viewHolder.view.getContext().getResources().getInteger(R.integer.tilePotraitHeight));
+                cardView.setMainImageDimensions(width, height);
                 Glide.with(viewHolder.view.getContext())
+                        .asBitmap()
                         .load(movie.getPortrait())
-                        .into(cardView.getMainImageView());
+                        .into(new SimpleTarget<Bitmap>(){
+                            @Override
+                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                Glide.get(viewHolder.view.getContext()).getBitmapPool().put(resource);
+                                cardView.getMainImageView().setImageBitmap(Glide.get(viewHolder.view.getContext()).getBitmapPool().get(width, height,RGB_565));
+                            }
+                        });
 
-            }else if(movie.getRowLayout().equalsIgnoreCase("square"))
-            {
-                cardView.setMainImageDimensions(
-                        convertDpToPixel(viewHolder.view.getContext(), viewHolder.view.getContext().getResources().getInteger(R.integer.tileSquareWidth)),
-                        convertDpToPixel(viewHolder.view.getContext(), viewHolder.view.getContext().getResources().getInteger(R.integer.tileSquareHeight)));
+
+            } else if (movie.getRowLayout().equalsIgnoreCase("square")) {
+                int width = convertDpToPixel(viewHolder.view.getContext(), viewHolder.view.getContext().getResources().getInteger(R.integer.tileSquareWidth));
+                int height = convertDpToPixel(viewHolder.view.getContext(), viewHolder.view.getContext().getResources().getInteger(R.integer.tileSquareHeight));
+                cardView.setMainImageDimensions(width, height);
                 Glide.with(viewHolder.view.getContext())
+                        .asBitmap()
                         .load(movie.getPortrait())
-                        .into(cardView.getMainImageView());
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                Glide.get(viewHolder.view.getContext()).getBitmapPool().put(resource);
+                                cardView.getMainImageView().setImageBitmap(resource);
+                            }
+                        });
+
             }
 
         }

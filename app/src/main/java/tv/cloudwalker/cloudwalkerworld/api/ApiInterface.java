@@ -14,7 +14,7 @@ import tv.cloudwalker.cloudwalkerworld.module.RecommendationsResponse;
 
 public interface ApiInterface {
     @Headers({"Accept-Version: 1.0.0"})
-    @GET("cats")
+    @GET("data.json")
     Observable<MovieResponse> getHomeScreenData();
 
     @Headers({"Accept-Version: 1.0.0"})

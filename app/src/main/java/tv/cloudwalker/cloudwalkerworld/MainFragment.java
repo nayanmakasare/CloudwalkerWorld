@@ -29,6 +29,7 @@ import android.support.v17.leanback.widget.HeaderItem;
 import android.support.v17.leanback.widget.ImageCardView;
 import android.support.v17.leanback.widget.ListRow;
 import android.support.v17.leanback.widget.ListRowPresenter;
+import android.support.v17.leanback.widget.ObjectAdapter;
 import android.support.v17.leanback.widget.OnItemViewClickedListener;
 import android.support.v17.leanback.widget.OnItemViewSelectedListener;
 import android.support.v17.leanback.widget.Presenter;
@@ -41,6 +42,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -54,8 +56,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import tv.cloudwalker.cloudwalkerworld.CustomPresenter.CardPresenter;
 import tv.cloudwalker.cloudwalkerworld.CustomPresenter.CharacterCardPresenter;
+import tv.cloudwalker.cloudwalkerworld.CustomWidget.CustomCardPresenter;
+import tv.cloudwalker.cloudwalkerworld.Utils.MovieDataObserver;
 import tv.cloudwalker.cloudwalkerworld.Utils.OttoBus;
 import tv.cloudwalker.cloudwalkerworld.api.ApiClient;
 import tv.cloudwalker.cloudwalkerworld.api.ApiInterface;
@@ -91,14 +97,14 @@ public class MainFragment extends BrowseFragment {
         Log.i(TAG, "onCreate "+Thread.currentThread().getId());
         super.onActivityCreated(savedInstanceState);
 
-//       apiService =  new Retrofit.Builder()
-//                .baseUrl("http://192.168.1.143:9876/")
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-//                .build().create(ApiInterface.class);
+       apiService =  new Retrofit.Builder()
+                .baseUrl("http://192.168.0.107:9876/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build().create(ApiInterface.class);
 
 
-        apiService = ApiClient.getClient(getActivity()).create(ApiInterface.class);
+//        apiService = ApiClient.getClient(getActivity()).create(ApiInterface.class);
         OttoBus.getBus().register(this);
         setupUIElements();
 
@@ -331,6 +337,7 @@ public class MainFragment extends BrowseFragment {
 //        listRowPresenter.setSelectEffectEnabled(false);
 
         rowsAdapter = new ArrayObjectAdapter(new ListRowPresenter());
+        rowsAdapter.registerObserver(new MovieDataObserver());
         setAdapter(rowsAdapter);
         setBadgeDrawable(getActivity().getResources().getDrawable(R.drawable.brand_logo));
         setHeadersState(HEADERS_ENABLED);
@@ -366,10 +373,6 @@ public class MainFragment extends BrowseFragment {
 
             if (item instanceof MovieTile) {
                 MovieTile movie = (MovieTile) item;
-//                Map<String , String> tileClickedMap = new HashMap<>();
-//                tileClickedMap.put("tileName", movie.getTitle());
-//                tileClickedMap.put("rowPosition", String.valueOf(((ArrayObjectAdapter)((ListRow)row).getAdapter()).indexOf(item)));
-//                FlurryAgent.logEvent(getString(R.string.movie_tile_clicked), tileClickedMap, true);
                 Intent intent = new Intent(getActivity(), DetailsActivity.class);
                 intent.putExtra(DetailsActivity.MOVIE, movie);
 
@@ -422,29 +425,8 @@ public class MainFragment extends BrowseFragment {
                 Object item,
                 RowPresenter.ViewHolder rowViewHolder,
                 Row row) {
-//            if (item instanceof MovieTile) {
-//                mBackgroundUri = ((MovieTile) item).getBackground();
-//                startBackgroundTimer();
-//            }
         }
     }
-
-//    private class UpdateBackgroundTask extends TimerTask {
-//
-//        @Override
-//        public void run() {
-//            mHandler.post(new Runnable() {
-//                @Override
-//                public void run() {
-//                    updateBackground(mBackgroundUri);
-//                }
-//            });
-//        }
-//    }
-
-
-
-
 
     private void setTileContent(MovieTile movieTile){
         ArrayList<String> subText = new ArrayList<>();
